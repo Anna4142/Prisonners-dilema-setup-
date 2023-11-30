@@ -1,5 +1,5 @@
 from enum import Enum
-from locations import Locations##new locations class-Anushka
+from locations import Locations
 
 class MouseMonitor:
     def __init__(self, videoAnalyzer, mouse_id):
