@@ -1,1 +1,1 @@
-# Changes in code for integration of vimba camera
+ Changes in code for integration of vimba camera
