@@ -26,7 +26,7 @@ class ExperimentManager:
 
         self.root = tk.Tk()  # Create a new Tkinter root window if not provided
         #self.videoAnalyser = VideoAnalyzerStub(self.root)
-        self.trial_logger = TrialLogger("C:/Users/anush/Downloads/PrisonerDilemmaPy_(4)")
+        self.trial_logger = TrialLogger("C:/Users/")
         self.mouse1 = MouseMonitor(self.videoAnalyser, 1)
         self.mouse2 = MouseMonitor(self.videoAnalyser, 2)
         self.opponent = Simulated_mouse()
