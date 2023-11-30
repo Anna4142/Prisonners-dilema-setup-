@@ -20,18 +20,15 @@ def main():
             trial_duration = settings.get('trial_duration')
             decision_time = settings.get('decision_time')
             opponent_strategy = settings.get('opponent_strategy')
-            opponent_type = settings.get('opponent_type')
+            opponent_type = settings.get('opponent_type')  # Make sure 'opponent_type' is included in the settings
 
             # Modify num_trials as per your requirement
             num_trials += 2
 
+            # Initialize and start the experiment
             expManager = ExperimentManager()
-            # Start the experiment logic in a new thread
-            expManager.start_experiment_in_thread(num_trials, trial_duration, decision_time, opponent_type,
-                                                  opponent_strategy)
-            # Start the GUI in another new thread
-            expManager.start_gui()
-
+            print("Experiment manager now running")
+            expManager.start_streaming_exp(num_trials, trial_duration, decision_time, opponent_type, opponent_strategy)
             del expManager
         else:
             print("No valid settings were provided.")
@@ -40,7 +37,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
 
 

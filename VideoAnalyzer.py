@@ -1,51 +1,16 @@
-class VideoAnalyzer:
+from vimba import *
+from vidgear.gears import WriteGear
+import time
+import cv2
+import numpy as np
+
+
+class Video_Analyzer:
     def __init__(self):
         self.video_file_loc = 'C:/Users/EngelHardBlab.MEDICINE/Desktop/experimentfolder/event_based_conditiong/video/1472/28_09_23_01_down.avi'
         self.regions = self.define_regions()
         self.thresholds = self.define_thresholds()
-        with Vimba.get_instance() as vimba:
-            print("START STREAMING")
-            cams = vimba.get_all_cameras()
-            with cams[0] as cam:
 
-                for feature in cam.get_all_features():
-                    try:
-                        value = feature.get()
-                    except:
-                        (AttributeError, VimbaFeatureError)
-                        value = None
-                    cam.Height.set(1216)
-                    cam.Width.set(1936)
-                    cam.BinningHorizontal = 4
-                    cam.BinningVertical = 4
-                    cam.AcquisitionFrameRateEnable.set("True")
-
-                    formats = cam.get_pixel_formats()
-                    print(f"Feature name: {feature.get_name()}")
-                    print(f"Display name: {feature.get_display_name()}")
-                    if not value == None:
-                        if not feature.get_unit() == '':
-                            print(f"Unit: {feature.get_unit()}", end=' ')
-                            print(f"value={value}")
-                        else:
-                            print(f"Not set")
-                            print("--------------------------------------------")
-
-                opencv_formats = intersect_pixel_formats(formats, OPENCV_PIXEL_FORMATS)
-                cam.set_pixel_format(opencv_formats[0])
-                exposure_time = cam.ExposureTime
-                cam.AcquisitionMode = 'Continuous'
-
-                # Define the codec and create VideoWriter object
-                # Define the codec and create VideoWriter object
-                video_writer = WriteGear(output=video_file_loc)
-                # Set up a loop to process each frame
-                frame_count = 0
-                start_time = time.time()
-                cam.ExposureTime.set(10000)
-                # play_beeps(5,10)
-                tbegin = time.time()
-                tstart = tbegin
     def define_regions(self):
         # Define the regions of interest (ROI) for the mouse
         regions = {
@@ -69,6 +34,7 @@ class VideoAnalyzer:
             'r6': 90000,
         }
         return thresholds
+
     def check_zones(self, frame):
         # Initialize an empty list to hold zone activation status
         zone_activation = [0] * 6  # [0, 0, 0, 0, 0, 0]
@@ -80,13 +46,52 @@ class VideoAnalyzer:
             # If the sum of pixels exceeds the threshold, set the corresponding index to 1
             if sum_of_pixels <= self.thresholds[region_key]:
                 zone_activation[idx] = 1
-
+        print("in check zones", zone_activation)
         return zone_activation
-    def process_frame(self):
-        # ... other code ...
 
-        frame = cam.get_frame().as_opencv_image()
-        frame = cv2.resize(frame, (960, 540))
+    def stream_and_process(self):
+        with Vimba.get_instance() as vimba:
+            cams = vimba.get_all_cameras()
+            with cams[0] as cam:
+                for feature in cam.get_all_features():
+                    try:
+                        value = feature.get()
+                    except:
+                        (AttributeError, VimbaFeatureError)
+                        value = None
+                    cam.Height.set(1216)
+                    cam.Width.set(1936)
+                    cam.BinningHorizontal = 4
+                    cam.BinningVertical = 4
+                    cam.AcquisitionFrameRateEnable.set("True")
 
-        zone_activations = self.check_zones(frame)
-        return zone_activations
+                    formats = cam.get_pixel_formats()
+                    print(f"Feature name: {feature.get_name()}")
+                    print(f"Display name: {feature.get_display_name()}")
+                    if not value == None:
+                        if not feature.get_unit() == '':
+                            print(f"Unit: {feature.get_unit()}", end=' ')
+                            print(f"value={value}")
+                        else:
+                            print(f"Not set")
+                            print("--------------------------------------------")
+                    opencv_formats = intersect_pixel_formats(formats, OPENCV_PIXEL_FORMATS)
+                    cam.set_pixel_format(opencv_formats[0])
+                    cam.AcquisitionMode = 'Continuous'
+                    cam.ExposureTime.set(10000)
+
+                while True:
+                    frame = cam.get_frame().as_opencv_image()
+                    frame = cv2.resize(frame, (960, 540))
+                    self.zone_activations = self.check_zones(frame)
+                    cv2.imshow('Frame', frame)
+
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        cam.stop_streaming()
+
+    def get_zone_activations(self):
+        # Return the latest zone activations
+        return self.zone_activations
+
+
+# analyzer = VideoAnalyzer()

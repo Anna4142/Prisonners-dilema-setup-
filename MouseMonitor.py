@@ -1,32 +1,27 @@
 from enum import Enum
 from locations import Locations##new locations class-Anushka
+
 class MouseMonitor:
-    def __init__(self, data_queue, mouse_id):
-        self.data_queue = data_queue
+    def __init__(self, videoAnalyzer, mouse_id):
+        self.videoAnalyzer = videoAnalyzer
         self.mouse_id = mouse_id
 
     def get_mouse_location(self):
-
-            zones = self.data_queue.get()
-            #print("zones", zones)
-            return self.decode_zones(zones)
-
+        zones = self.videoAnalyzer.get_mouse_location()
+        # Split the zones based on mouse_id
+        mouse_zones = zones[(self.mouse_id - 1) * 3:self.mouse_id * 3]
+        return self.decode_zones(mouse_zones)
 
     def decode_zones(self, zones_list):
+        # Interpret the zones list to return the corresponding location
         if zones_list[0] == 1:
-            return Locations.Cooperate  # 'Left' arrow was pressed
+            return Locations.Cooperate  # 'Up' arrow was pressed
         elif zones_list[1] == 1:
-            return Locations.Center     # 'Down' arrow was pressed
+            return Locations.Center     # 'Left' arrow was pressed
         elif zones_list[2] == 1:
-            return Locations.Defect     # 'Right' arrow was pressed
+            return Locations.Defect     # 'Down' arrow was pressed
+
         return Locations.Unknown  # If no pattern is matched, return Unknown
 
-
-
-#ANUSHKA-CHANGE IN LOCATION KEY DECODING
-#Left arrow for Cooperate ([1, 0, 0]),
-#Down arrow for Center ([0, 1, 0]),
-#Right arrow for Defect ([0, 0, 1]),
-#Up arrow for Default ([0, 0, 0]).
 
 

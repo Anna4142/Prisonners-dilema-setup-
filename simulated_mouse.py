@@ -4,20 +4,19 @@ from MouseMonitor import MouseMonitor
 
 from locations import Locations
 import tkinter as tk
-
-
 class Simulated_mouse:
-    def __init__(self, data_queue, mouse_id):
-            self.strategy = "Unconditional Cooperator"
-            self.data_queue = data_queue  # Use the passed-in shared queue
-            self.LastDecision = Locations.Center
-            self.p = 0.5  # Default probability value
-            self.mouse_monitor = MouseMonitor(data_queue, mouse_id)  # Use the same queue
-            self.decisionMade = True
-            self.rewardReceived = True
+    def __init__(self):
+        self.strategy = "Unconditional Cooperator"
+        root = tk.Tk()
+        self.video_analyzer_stub = VideoAnalyzerStub(root)
+
+        self.LastDecision = Locations.Center
+        self.p = 0.5  # Default value for probability
+        self.mouse_monitor = MouseMonitor(self.video_analyzer_stub, mouse_id=1)
+        self.decisionMade = True
+        self.rewardReceived=True
 
     def SetStrategy(self, strategy):
-
         self.strategy = strategy
 
     def NewTrial(self):

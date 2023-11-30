@@ -37,4 +37,3 @@ class StateTimer:
     def remaining_time(self):
         elapsed = self.time_elapsed()
         return max(0, self.timeout_duration - elapsed)
-za
