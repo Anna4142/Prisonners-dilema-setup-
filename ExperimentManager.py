@@ -1,8 +1,8 @@
 import time
 import threading
-from VideoAnalyzer import Video_Analyzer
+#from VideoAnalyzer import Video_Analyzer
 from MouseMonitor import MouseMonitor
-#from VideoAnalyzerStub import Video_Analyzer
+from VideoAnalyzerStub import Video_Analyzer
 from MouseMonitor import Locations
 from logger import TrialLogger
 from simulated_mouse import Simulated_mouse
@@ -29,7 +29,7 @@ class ExperimentManager:
         self.trial_logger = TrialLogger("C:/Users/anush/Downloads/PrisonerDilemmaPy_(4)")
         self.mouse1 = MouseMonitor(self.videoAnalyser, 1)
         self.mouse2 = MouseMonitor(self.videoAnalyser, 2)
-        self.opponent = Simulated_mouse()
+        self.opponent= Simulated_mouse()
         self.numcompletedtrial = 0
         self.stateManager = StateManager()
 
@@ -205,13 +205,13 @@ class ExperimentManager:
                 mouse2 = self.mouse2
             elif opponent_type == "mouse and computer":
                 mouse1 = self.mouse1
-                mouse2 = self.opponent2
+                mouse2 = self.opponent
             else:
-                mouse1 = self.opponent1
-                mouse2 = self.opponent2
+                mouse1 = self.opponent
+                mouse2 = self.opponent
 
             self.stateManager.SetTimeOuts(duration, time_decision)
-            self.opponent1.SetStrategy(opponent_strategy)
+            self.opponent.SetStrategy(opponent_strategy)
             numcompletedtrial = 0
 
             currentstate = States.Start

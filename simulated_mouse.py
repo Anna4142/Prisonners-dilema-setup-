@@ -1,5 +1,5 @@
 import random
-from VideoAnalyzerStub import VideoAnalyzerStub
+from VideoAnalyzerStub import Video_Analyzer
 from MouseMonitor import MouseMonitor
 
 from locations import Locations
@@ -8,7 +8,7 @@ class Simulated_mouse:
     def __init__(self):
         self.strategy = "Unconditional Cooperator"
         root = tk.Tk()
-        self.video_analyzer_stub = VideoAnalyzerStub(root)
+        self.video_analyzer_stub = Video_Analyzer()
 
         self.LastDecision = Locations.Center
         self.p = 0.5  # Default value for probability
