@@ -1,10 +1,5 @@
-import tkinter as tk
 from ExperimentManager import ExperimentManager
 from experimentgui import *
-import tkinter as tk
-
-
-
 
 def main():
         # Create an instance of the ExperimentGUI class
