@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="da1ff266-2821-4c8b-867a-7aec48bfd940" name="Changes" comment="-new experiment manager with dynamic assignment of mice classes">
-      <change afterPath="$PROJECT_DIR$/VideoAnalyserSim.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VideoAnalyserSimTest.py" afterDir="false" />
+    <list default="true" id="da1ff266-2821-4c8b-867a-7aec48bfd940" name="Changes" comment="Made further changes in video_analyser(cam)&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExperimentManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExperimentManager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MouseMonitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/MouseMonitor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VideoAnalyzerStub.py" beforeDir="false" afterPath="$PROJECT_DIR$/VideoAnalyzerStub.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/StateManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VideoAnalyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/VideoAnalyzer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulated_mouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulated_mouse.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,7 +60,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Prisonners_dilemma_sim" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.VideoAnalyserSimTest">
+  <component name="RunManager" selected="Python.MainWindow">
     <configuration name="MainWindow" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PrisonerDilemmaPy" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -135,8 +134,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.VideoAnalyserSimTest" />
         <item itemvalue="Python.MainWindow" />
+        <item itemvalue="Python.VideoAnalyserSimTest" />
       </list>
     </recent_temporary>
   </component>
@@ -151,7 +150,7 @@
       <workItem from="1700987306416" duration="32587000" />
       <workItem from="1701259845177" duration="8040000" />
       <workItem from="1701415018905" duration="1351000" />
-      <workItem from="1701598106171" duration="1764000" />
+      <workItem from="1701598106171" duration="4945000" />
     </task>
     <task id="LOCAL-00001" summary="v1">
       <created>1701020122959</created>
@@ -195,7 +194,28 @@
       <option name="project" value="LOCAL" />
       <updated>1701416303745</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="-Video_analyer_sim_test class added">
+      <created>1701600346976</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1701600346976</updated>
+    </task>
+    <task id="LOCAL-00008" summary="-Video_analyser_sim_test class added">
+      <created>1701600362766</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1701600362766</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Made further changes in video_analyser(cam)&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
+      <created>1701610002380</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1701610002380</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -230,11 +250,14 @@
     <MESSAGE value="correct state manager" />
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
     <MESSAGE value="-new experiment manager with dynamic assignment of mice classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="-new experiment manager with dynamic assignment of mice classes" />
+    <MESSAGE value="-Video_analyer_sim_test class added" />
+    <MESSAGE value="-Video_analyser_sim_test class added" />
+    <MESSAGE value="Made further changes in video_analyser(cam)&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made further changes in video_analyser(cam)&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$MainWindow.coverage" NAME="MainWindow Coverage Results" MODIFIED="1701599741391" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$VideoAnalyserSimTest.coverage" NAME="VideoAnalyserSimTest Coverage Results" MODIFIED="1701600010851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$MainWindow.coverage" NAME="MainWindow Coverage Results" MODIFIED="1701603902510" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$VideoAnalyserSimTest.coverage" NAME="VideoAnalyserSimTest Coverage Results" MODIFIED="1701600239344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$PrisonerDilemmaPy.coverage" NAME="PrisonerDilemmaPy Coverage Results" MODIFIED="1700987419661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
   </component>
 </project>

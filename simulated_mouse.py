@@ -8,7 +8,7 @@ class Simulated_mouse:
     def __init__(self):
         self.strategy = "Unconditional Cooperator"
         root = tk.Tk()
-        self.video_analyzer_stub = Video_Analyzer()
+        self.video_analyzer_stub = Video_Analyzer(root)
 
         self.LastDecision = Locations.Center
         self.p = 0.5  # Default value for probability

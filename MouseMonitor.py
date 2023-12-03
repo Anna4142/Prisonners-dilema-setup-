@@ -1,24 +1,27 @@
 from enum import Enum
-from locations import Locations
+from locations import Locations##new locations class-Anushka
+
 
 class MouseMonitor:
-    def __init__(self, video_analyser,mouse_id):
+    def __init__(self, video_analyzer_instance, mouse_id):
+        self.video_analyzer = video_analyzer_instance
         self.mouse_id = mouse_id
 
-    def get_mouse_location(self, zones_list):
-        # Split the zones based on mouse_id
-        mouse_zones = zones_list[(self.mouse_id - 1) * 3 : self.mouse_id * 3]
+    def get_mouse_location(self,zones):
 
-        # Interpret the zones list to return the corresponding location
-        location = Locations.Unknown
-        if mouse_zones[0] == 1:
-            location = Locations.Cooperate
-        elif mouse_zones[1] == 1:
-            location = Locations.Center
-        elif mouse_zones[2] == 1:
-            location = Locations.Defect
+        # Split the zones based on mouse_id
+        zones_list = zones[(self.mouse_id - 1) * 3:self.mouse_id * 3]
+
+
+
+        if zones_list[0] == 1:
+            location= Locations.Cooperate  # 'Up' arrow was pressed
+        elif zones_list[1] == 1:
+            location=Locations.Center     # 'Left' arrow was pressed
+        elif zones_list[2] == 1:
+            location = Locations.Defect     # 'Down' arrow was pressed
+        else:
+            location = Locations.Unknown  # If no pattern is matched, return Unknown
+
 
         return location
-
-
-
