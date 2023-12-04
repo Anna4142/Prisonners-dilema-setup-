@@ -1,4 +1,6 @@
-from ArduinoDigital import ArduinoDigital
+#from ArduinoDigital import ArduinoDigital
+from ArduinoDigitalSim import ArduinoDigital
+
 
 ##### main
 opcode = -1

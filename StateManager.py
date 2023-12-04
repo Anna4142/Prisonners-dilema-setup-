@@ -1,136 +1,121 @@
-from vimba import *
-from vidgear.gears import WriteGear
 import time
-import cv2
-import numpy as np
+from enum import Enum
 
-class Video_Analyzer:
-    def __init__(self,vimba_instance):
-        self.vimba = vimba_instance
-        self.video_file_loc = 'C:/Users/EngelHardBlab.MEDICINE/Desktop/experimentfolder/event_based_conditiong/video/1472/28_09_23_01_down.avi'
-        self.regions = self.define_regions()
-        self.thresholds = self.define_thresholds()
+class States (Enum):
+    Start               = 1
+    CenterReward        = 2
+    TrialStarted        = 3
+    M1CM2C              = 4
+    M1CM2D              = 5
+    M1DM2C              = 6
+    M1DM2D              = 7
+    WaitForReturn       = 8
+    TrialCompleted      = 9
+    TrialAbort          = 10
+    DecisionAbort       = 11
+    End                 = 12
 
-        self.frame_counter = 0
-        self.trial_start_time = time.time()  # Initialize start time
-        self.trial_end_time = None  # Initialize end time
+class Events (Enum):
+    Mouse1InCenter   = 1
+    Mouse2InCenter   = 2
+    Mouse1Cooporated = 4
+    Mouse2Cooporated = 8
+    Mouse1Defected   = 16
+    Mouse2Defected   = 32
+    LastTrial        = 64
+    RewardDelivered  = 128
 
-        with Vimba.get_instance() as vimba:
-
-            cams = vimba.get_all_cameras()
-            if not cams:
-                raise ValueError("No cameras found")
-            with cams[0] as cam:
-                self.cam = cams[0]
-                for feature in cam.get_all_features():
-                    try:
-                        value = feature.get()
-                    except:
-                        (AttributeError, VimbaFeatureError)
-                        value = None
-                    cam.Height.set(1216)
-                    cam.Width.set(1936)
-                    cam.BinningHorizontal = 4
-                    cam.BinningVertical = 4
-                    cam.AcquisitionFrameRateEnable.set("True")
-
-                    formats = cam.get_pixel_formats()
-                    print(f"Feature name: {feature.get_name()}")
-                    print(f"Display name: {feature.get_display_name()}")
-                    if not value == None:
-                        if not feature.get_unit() == '':
-                            print(f"Unit: {feature.get_unit()}", end=' ')
-                            print(f"value={value}")
-                        else:
-                            print(f"Not set")
-                            print("--------------------------------------------")
-                    opencv_formats = intersect_pixel_formats(formats, OPENCV_PIXEL_FORMATS)
-                    cam.set_pixel_format(opencv_formats[0])
-                    cam.AcquisitionMode = 'Continuous'
-                    cam.ExposureTime.set(10000)
-
-
-    def define_regions(self):
-        # Define the regions of interest (ROI) for the mouse
-        regions = {
-             'r1': [(500, 310), (535, 380)],#bottom right
-            'r2': [(500, 110), (535, 180)],#top right
-            'r3': [(455, 310), (490, 380)],#bottom left
-
-            'r4': [(455, 110), (490, 180)],#top left
-
-            'r5': [(590, 220), (660, 280)],#center right
-            'r6': [(330, 220), (400, 280)],#center left
+class StateManager:
+    def __init__(self):
+        self.NextState = {
+            States.Start : [States.CenterReward],
+            States.CenterReward : [States.TrialStarted],
+            States.TrialStarted : [States.M1CM2C, States.M1CM2D, States.M1DM2C, States.M1DM2D],
+            States.M1CM2C : [States.WaitForReturn],
+            States.M1CM2D: [States.WaitForReturn],
+            States.M1DM2C: [States.WaitForReturn],
+            States.M1DM2D: [States.WaitForReturn],
+            States.WaitForReturn:[States.TrialCompleted],
+            States.TrialCompleted:[States.End],
+            States.TrialAbort:[States.End, States.TrialStarted],
+            States.DecisionAbort:[States.End],
+            States.End:[States.End]
         }
-        return regions
 
-    def draw_regions(self, frame):
-        for region_key in self.regions:
-            top_left, bottom_right = self.regions[region_key]
-            cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 2)  # Green rectangle
-        return frame
-    def define_thresholds(self):
-        # Define the thresholds for each region
-        thresholds = {
-            'r1': 90000,
-            'r2': 90000,
-            'r3': 90000,
-            'r4': 90000,
-            'r5': 90000,
-            'r6': 90000,
+        self.TransitionEvent = {
+            States.Start : [Events.Mouse1InCenter.value + Events.Mouse2InCenter.value],
+            States.CenterReward : [Events.RewardDelivered.value],
+            States.TrialStarted : [Events.Mouse1Cooporated.value + Events.Mouse2Cooporated.value,
+                                   Events.Mouse1Cooporated.value + Events.Mouse2Defected.value,
+                                   Events.Mouse1Defected.value + Events.Mouse2Cooporated.value,
+                                   Events.Mouse1Defected.value + Events.Mouse2Defected.value],
+            States.M1CM2C : [Events.RewardDelivered.value],
+            States.M1CM2D: [Events.RewardDelivered.value],
+            States.M1DM2C: [Events.RewardDelivered.value],
+            States.M1DM2D: [Events.RewardDelivered.value],
+            States.WaitForReturn:[Events.Mouse1InCenter.value + Events.Mouse2InCenter.value],
+            States.TrialCompleted:[Events.LastTrial.value],
+            States.TrialAbort:[Events.LastTrial.value, Events.Mouse1InCenter.value + Events.Mouse2InCenter.value],
+            States.DecisionAbort:[Events.LastTrial.value],
+            States.End:[0]
         }
-        return thresholds
-    def check_zones(self, frame):
-        # Initialize an empty list to hold zone activation status
-        zone_activation = [0] * 6  # [0, 0, 0, 0, 0, 0]
 
-        for idx, region_key in enumerate(self.regions):
-            (y1, x1), (y2, x2) = self.regions[region_key]
-            sum_of_pixels = np.sum(frame[y1:y2, x1:x2])
+        self.TimeOutState = {
+            States.Start : None,
+            States.CenterReward : States.TrialStarted,   # allow for an unconditional (ignore Reward delivered event) transition
+            States.TrialStarted : States.DecisionAbort,
+            States.M1CM2C: States.WaitForReturn,         # allow for an unconditional (ignore Reward delivered event) transition
+            States.M1CM2D: States.WaitForReturn,         # allow for an unconditional (ignore Reward delivered event) transition
+            States.M1DM2C: States.WaitForReturn,         # allow for an unconditional (ignore Reward delivered event) transition
+            States.M1DM2D: States.WaitForReturn,         # allow for an unconditional (ignore Reward delivered event) transition
+            States.WaitForReturn: States.TrialAbort,
+            States.TrialCompleted: States.CenterReward,
+            States.TrialAbort: None,
+            States.DecisionAbort: States.TrialStarted,
+            States.End: None
+        }
 
-            # If the sum of pixels exceeds the threshold, set the corresponding index to 1
-            if sum_of_pixels <= self.thresholds[region_key]:
-                zone_activation[idx] = 1
-        #print("in check zones", zone_activation)
-        return zone_activation
+        self.TransitionTimeOut = {
+            States.Start: None,
+            States.CenterReward: 0,
+            States.TrialStarted: 10,    # 10 seconds is a default value. It is replaces by the SetTimeOut functions.
+            States.M1CM2C: 0,
+            States.M1CM2D: 0,
+            States.M1DM2C: 0,
+            States.M1DM2D: 0,
+            States.WaitForReturn: 10,    # 10 seconds is a default value. It is replaces by the SetTimeOut functions.
+            States.TrialCompleted: 0,
+            States.TrialAbort: None,
+            States.DecisionAbort: 0,
+            States.End: None
+        }
 
-    def format_time(self,seconds):
-        # Helper function to format seconds into H:M:S format
-        m, s = divmod(seconds, 60)
-        h, m = divmod(m, 60)
-        return "{:02d}:{:02d}:{:02d}".format(int(h), int(m), int(s))
-    def draw_regions(self, frame):
-        for region_key in self.regions:
-            top_left, bottom_right = self.regions[region_key]
-            cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 2)  # Green rectangle
-        return frame
-    def process_single_frame(self):
-        with self.vimba:
-            with self.cam:
-                frame = self.cam.get_frame().as_opencv_image()
-                # Increment and display the frame number
-                self.frame_counter += 1
+        self.current_state = States.Start
+        self.StateStartTime = time.time()
 
-                # Resize the frame
-                frame = cv2.resize(frame, (960, 540))
+    def SetTimeOut(self, decision_time, return_time):
+        self.TransitionTimeOut[States.TrialStarted] = decision_time
+        self.TransitionTimeOut[States.WaitForReturn] = return_time
 
-                # Calculate elapsed time since trial start
-                time_since_trial_start = time.time() - self.trial_start_time
+    def DetermineState(self, events):
+        TransitionEvents = self.TransitionEvent[self.current_state]
 
-                # Format and display trial information and elapsed time
-                #cv2.putText(frame, f"Trial: {trial_number}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-                cv2.putText(frame, f"Since Start: {self.format_time(time_since_trial_start)}", (10, 70),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-                #cv2.putText(frame, f"Frame: {self.frame_counter}", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                frame = self.draw_regions(frame)
-                # Display the frame
-                cv2.imshow('Frame', frame)
-                cv2.waitKey(1)
+        # Check and Perform Event base transition
+        for i, event in enumerate(TransitionEvents):
+            if event & events == event:
+                # Transition to the next state based on the event
+                self.current_state = self.NextState[self.current_state][i]
+                self.StateStartTime = time.time()
+                return self.current_state
 
-                zone_activations = self.check_zones(frame)
+        # Check and Perform timeout base transition
+        if self.TimeOutState[self.current_state]:
+            if time.time() - self.StateStartTime > self.TransitionTimeOut[self.current_state]:
+                # Transition to the timeout state
+                self.current_state = self.TimeOutState[self.current_state]
+                self.StateStartTime = time.time()
 
-                return zone_activations
+        return self.current_state
 
-    def get_zone_activations(self):
-        # Return the latest zone activations
-        return self.zone_activations
+
+
