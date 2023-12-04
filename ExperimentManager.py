@@ -1,6 +1,7 @@
 import time
 from vimba import *
-from VideoAnalyser1 import Video_Analyzer
+from Sound_manager import SoundManager
+#from VideoAnalyser1 import Video_Analyzer
 #from VideoAnalyzer import Video_Analyzer
 #from MouseMonitor import MouseMonitor
 from MouseMonitor1 import MouseMonitor
@@ -67,6 +68,9 @@ class ExperimentManager:
 
         self.reward_manager = RewardManager(self.board, [7, 8, 9, 10, 11, 12])
 
+        self.sound_manager = SoundManager()
+        self.sound_manager.load_sound('beep', 'path_to_beep_sound.wav')
+
     def initialize_arduino(self):
         comport="COM11"
         self.board = ArduinoDigital(comport)
@@ -91,6 +95,8 @@ class ExperimentManager:
                 self.reward_manager.deliver_reward('dd', 11, self.punishment_time)
 
         elif state == States.TrialStarted:
+            self.sound_manager.play_sound('beep')
+
             if mouse1simulated:
                 mouse1simulated.NewTrial()
             if mouse2simulated:
@@ -162,8 +168,7 @@ class ExperimentManager:
                 self.reward_manager.deliver_reward('dd', 2, self.punishment_time)
 
         elif state == States.WaitForReturn:
-            # Handle WaitForReturn state
-            pass  # Placeholder for WaitForReturn logic
+            self.sound_manager.play_sound('beep')
 
         elif state == States.TrialCompleted:
             # Increment the trial number counter
