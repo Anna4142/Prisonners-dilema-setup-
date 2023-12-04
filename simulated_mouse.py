@@ -1,5 +1,5 @@
 import random
-
+from StateManager import States
 from locations import Locations
 
 class Simulated_mouse:
@@ -27,28 +27,60 @@ class Simulated_mouse:
         else:
             print("Error: p should be between 0 and 1")
 
-    def get_mouse_location(self, zones_list, other_mouse_location):
-        if self.decisionMade:
-            if self.rewardReceived:
-                opp_choice = Locations.Center
-            else:
-                opp_choice = self.LastDecision
-        else:
-            self.decisionMade = True
+    def GetMouseLocation(self, mouse_location,current_state):
+        list_opp = Locations.Unknown  # Default to no decision
+        if not mouse_location:  # If the mouse_location isn't provided, get it from the MouseMonitor
+                mouse_location = self.mouse_monitor.get_mouse_location()
+        if current_state == States.Start:
+            list_opp = Locations.Center
+
+        elif current_state == States.CenterReward:
+            list_opp = Locations.Center
+
+        elif current_state == States.TrialStarted:
+            # Decision-making based on the strategy
+            # Existing logic based on strategy goes here
 
             if self.strategy == "Unconditional Cooperator":
-                opp_choice = Locations.Cooperate
-            elif self.strategy == "Unconditional Defector":
-                opp_choice = Locations.Defect
-            elif self.strategy == "Random":
-                opp_choice = random.choice([Locations.Cooperate, Locations.Defect])
-            elif self.strategy == "Probability p Cooperator":
-                if random.random() < self.p:
-                    opp_choice = Locations.Cooperate
-                else:
-                    opp_choice = Locations.Defect
-            elif self.strategy == "Tit for Tat":
-                opp_choice = other_mouse_location
+                list_opp =Locations.Cooperate # Cooperate in these states
 
-        self.LastDecision = opp_choice  # Update the last decision made by the opponent
-        return opp_choice
+            elif self.strategy == "Unconditional Defector":
+                list_opp = Locations.Defect  # Defect in these states
+
+            elif self.strategy == "Random":
+                list_opp = random.choice([Locations.Cooperate,  Locations.Defect ])  # Randomly choose between Cooperate and Defect
+
+            elif self.strategy == "Probability p Cooperator":
+                list_opp = Locations.Cooperate if random.random() < self.p else Locations.Defect  # Cooperate based on probability p
+
+            elif self.strategy == "Tit for Tat":
+                # Tit for Tat strategy: Cooperate if opponent cooperated, otherwise defect
+                list_opp = mouse_location
+
+
+        elif current_state == States.M1CM2C:
+           pass  # Example: Cooperate
+
+        elif current_state == States.M1CM2D:
+            pass # Example: Cooperate
+
+        elif current_state == States.M1DM2C:
+            pass  # Example: Defect
+
+        elif current_state == States.M1DM2D:
+           pass # Example: Defect
+
+        elif current_state == States.WaitForReturn:
+            list_opp = Locations.Center   # Example: Move to Center
+
+        elif current_state == States.TrialCompleted:
+            list_opp = Locations.Center
+        elif current_state == States.TrialAbort:
+            list_opp = Locations.Center
+
+        elif current_state == States.DecisionAbort:
+            list_opp =Locations.Center
+        elif current_state == States.End:
+            list_opp = Locations.Center
+
+        return list_opp
