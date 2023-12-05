@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-
+import OpponentType
 
 class ExperimentGUI:
     def __init__(self):
@@ -28,6 +28,13 @@ class ExperimentGUI:
         self.start_button.pack(pady=20)
         self.window.mainloop()
 
+    def get_opponent_type(self,opponent_type_str):
+        mapping = {
+            "mouse_mouse": OpponentType.MOUSE_MOUSE,
+            "mouse_computer": OpponentType.MOUSE_COMPUTER,
+            "computer_computer": OpponentType.COMPUTER_COMPUTER
+        }
+        return mapping.get(opponent_type_str, None)
     def create_opp_options(self):
         # Create opponent selection radio buttons
         tk.Label(self.window, text="Select the opponent:").pack(anchor='w', padx=20, pady=10)
@@ -220,7 +227,7 @@ class ExperimentGUI:
                 'trial_duration': trial_duration,
                 'decision_time': decision_time,
 
-                'opponent_type':opponent_type,
+                'opponent_type': self.get_opponent_type(opponent_type),
                 'opponent_strategy': opponent_strategy,
                 'computer_opponent_strategy' : computer_opponent_strategy,
             }

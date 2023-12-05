@@ -4,7 +4,7 @@ from Sound_manager import SoundManager
 #from VideoAnalyser1 import Video_Analyzer
 from VideoAnalyzer import Video_Analyzer
 
-#from MouseMonitor import MouseMonitor
+from MouseMonitor import MouseMonitor
 #from VideoAnalyzerStub import Video_Analyzer
 from MouseMonitor import Locations
 from logger import TrialLogger
@@ -17,6 +17,7 @@ import experimentgui
 from RewardManager import RewardManager
 import tkinter as tk
 from logger import TrialLogger
+from OpponentType import OpponentType
 #from ArduinoDigitalSim import ArduinoDigital  ##Anushka-new class
 class ExperimentManager:
     def __init__(self):
@@ -207,12 +208,12 @@ class ExperimentManager:
             print("opponent ", opponent_type)
             print("opponent strategy ", opponent1_strategy)
 
-            if opponent_type == "mouse_mouse":
+            if opponent_type == OpponentType.MOUSE_MOUSE:
                 mouse1 = MouseMonitor(self.videoAnalyser,1)
                 mouse1sim = None
                 mouse2 = MouseMonitor(self.videoAnalyser,2)
                 mouse2sim = None
-            elif opponent_type == "mouse_computer":  # was "mouse and computer":  in your code
+            elif opponent_type == OpponentType.MOUSE_COMPUTER:  # was "mouse and computer":  in your code
                 # #Micky - you are passing and comparing different strings.
                 # I strongly recomand using enums for a descrete list of options
                 mouse1 = MouseMonitor(self.videoAnalyser,1)
@@ -248,11 +249,11 @@ class ExperimentManager:
                     #print("zone activations", zone_activations)
 
 
-                    if opponent_type == "mouse_mouse":
+                    if opponent_type == OpponentType.MOUSE_MOUSE:
                         # Retrieve locations from both queues for real mice
                         mouselocation = mouse1.get_mouse_location(zone_activations)
                         opponent_choice = mouse2.get_mouse_location(zone_activations)
-                    elif opponent_type == "mouse_computer":
+                    elif opponent_type == OpponentType.MOUSE_COMPUTER:
                         # Retrieve location for the real mouse from its queue and get the simulated mouse's location
                         mouselocation = mouse1.get_mouse_location(zone_activations)
 

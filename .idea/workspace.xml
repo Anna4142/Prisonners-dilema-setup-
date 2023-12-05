@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="da1ff266-2821-4c8b-867a-7aec48bfd940" name="Changes" comment="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
-      <change beforePath="$PROJECT_DIR$/simulated_mouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulated_mouse.py" afterDir="false" />
+    <list default="true" id="da1ff266-2821-4c8b-867a-7aec48bfd940" name="Changes" comment="handling 2 different simulated mice changes,exp manager changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <change afterPath="$PROJECT_DIR$/OpponentType.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExperimentManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExperimentManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experimentgui.py" beforeDir="false" afterPath="$PROJECT_DIR$/experimentgui.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -316,7 +320,28 @@
       <option name="project" value="LOCAL" />
       <updated>1701778324510</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <created>1701778796529</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778796529</updated>
+    </task>
+    <task id="LOCAL-00025" summary="handling 2 different simulated mice changes,exp manager changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <created>1701778867891</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778867891</updated>
+    </task>
+    <task id="LOCAL-00026" summary="handling 2 different simulated mice changes,exp manager changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <created>1701778897933</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778897933</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,10 +385,11 @@
     <MESSAGE value="handling 2 different simulated mice changes+changes in exp manager&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
     <MESSAGE value="changes in exp manger&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
     <MESSAGE value="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
+    <MESSAGE value="handling 2 different simulated mice changes,exp manager changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="handling 2 different simulated mice changes,exp manager changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$MainWindow.coverage" NAME="MainWindow Coverage Results" MODIFIED="1701603902510" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$MainWindow.coverage" NAME="MainWindow Coverage Results" MODIFIED="1701778955706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$VideoAnalyserSimTest.coverage" NAME="VideoAnalyserSimTest Coverage Results" MODIFIED="1701600239344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PrisonerDilemmaPy$PrisonerDilemmaPy.coverage" NAME="PrisonerDilemmaPy Coverage Results" MODIFIED="1700987419661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
   </component>
