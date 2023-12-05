@@ -1,6 +1,6 @@
 import time
 from Sound_manager import SoundManager
-from vimba import *
+#from vimba import *
 #from VideoAnalyser1 import Video_Analyzer
 from VideoAnalyzer import Video_Analyzer
 
