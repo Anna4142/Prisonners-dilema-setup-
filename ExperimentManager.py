@@ -1,7 +1,7 @@
 import time
-from vimba import *
 from Sound_manager import SoundManager
-#from VideoAnalyser1 import Video_Analyzer
+from vimba import *
+from VideoAnalyser1 import Video_Analyzer
 #from VideoAnalyzer import Video_Analyzer
 #from MouseMonitor import MouseMonitor
 from MouseMonitor1 import MouseMonitor
@@ -28,14 +28,12 @@ class ExperimentManager:
             self.videoAnalyser = Video_Analyzer(vimba)
 
         #self.videoAnalyser = Video_Analyzer()  # or VideoAnalyzer, ensure correct class name
-        self.mouse1 = MouseMonitor(self.videoAnalyser, 1)
-        self.mouse2 = MouseMonitor(self.videoAnalyser, 2)
-        self.opponent = Simulated_mouse()
+
         self.numcompletedtrial = 0
         self.num_trial=0
 
         self.stateManager = StateManager()
-
+        self.trial_logger=TrialLogger
         # Initialize Arduino board
         self.initialize_arduino()
 
@@ -69,7 +67,7 @@ class ExperimentManager:
         self.reward_manager = RewardManager(self.board, [7, 8, 9, 10, 11, 12])
 
         self.sound_manager = SoundManager()
-        self.sound_manager.load_sound('beep', 'path_to_beep_sound.wav')
+        self.sound_manager.load_sound('beep', 'C:/Users/EngelHardBlab.MEDICINE/Desktop/experimentfolder/sounds/beep.wav')
 
     def initialize_arduino(self):
         comport="COM11"
@@ -174,8 +172,7 @@ class ExperimentManager:
             # Increment the trial number counter
             self.numcompletedtrial += 1
             print("Trial Completed. Number of completed trials: ", self.numcompletedtrial)
-            self.trial_logger.log_trial_data(self.numcompletedtrial, "Completed Trial", self.opponent_choice, self.mouse_choice,
-                                             self.mouse_reward, self.opponent_reward)
+            #self.trial_logger.log_trial_data(self.numcompletedtrial, "Completed Trial", self.opponent_choice, self.mouse_choice, self.mouse_reward, self.opponent_reward)
 
         elif state == States.TrialAbort:
             # Log that the trial has been aborted
@@ -184,8 +181,7 @@ class ExperimentManager:
             self.mouse_choice = "N/A",
             self.mouse_reward = "-",
             self.opponent_reward = "-"
-            self.trial_logger.log_trial_data(self.numcompletedtrial, "Return Abort", self.opponent_choice, self.mouse_choice,
-                                             self.mouse_reward, self.opponent_reward)
+            #self.trial_logger.log_trial_data(self.numcompletedtrial, "Return Abort", self.opponent_choice, self.mouse_choice,self.mouse_reward, self.opponent_reward)
 
         elif state == States.DecisionAbort:
             # Handle DecisionAbort state
@@ -194,8 +190,7 @@ class ExperimentManager:
             self.mouse_choice = "N/A",
             self.mouse_reward = "-",
             self.opponent_reward = "-"
-            self.trial_logger.log_trial_data(self.numcompletedtrial, "Decision Abort", self.opponent_choice, self.mouse_choice,
-                                             self.mouse_reward, self.opponent_reward)
+            # self.trial_logger.log_trial_data(self.numcompletedtrial, "Decision Abort", self.opponent_choice, self.mouse_choice,self.mouse_reward, self.opponent_reward)
 
         elif state == States.End:
             # Stop recording, finalize logs, show end message, etc.
@@ -212,26 +207,26 @@ class ExperimentManager:
             print("opponent ", opponent_type)
             print("opponent strategy ", opponent1_strategy)
 
-            if opponent_type == "mouse and mouse":
-                mouse1 = MouseMonitor(1)
+            if opponent_type == "mouse_mouse":
+                mouse1 = MouseMonitor(self.videoAnalyser,1)
                 mouse1sim = None
-                mouse2 = MouseMonitor(2)
+                mouse2 = MouseMonitor(self.videoAnalyser,2)
                 mouse2sim = None
-            elif opponent_type == "mouse and computer":  # was "mouse and computer":  in your code
+            elif opponent_type == "mouse_computer":  # was "mouse and computer":  in your code
                 # #Micky - you are passing and comparing different strings.
                 # I strongly recomand using enums for a descrete list of options
-                mouse1 = MouseMonitor(1)
+                mouse1 = MouseMonitor(self.videoAnalyser,1)
                 mouse1sim = None
                 mouse2 = Simulated_mouse()
                 mouse2.SetStrategy(opponent1_strategy)
                 mouse2sim = mouse2
             else:
+
                 mouse1 = Simulated_mouse()
                 mouse1.SetStrategy(opponent1_strategy)
                 mouse1sim = mouse1
                 mouse2 = Simulated_mouse()
-                mouse2.SetStrategy(
-                    opponent2_strategy)
+                mouse2.SetStrategy(opponent2_strategy)
                 mouse2sim = mouse2
             self.stateManager.SetTimeOut(duration, time_decision)
 
@@ -251,8 +246,24 @@ class ExperimentManager:
                 else:
                     zone_activations = self.videoAnalyser.process_single_frame()
                     #print("zone activations", zone_activations)
-                    mouselocation = self.mouse1.get_mouse_location(zone_activations)
-                    opponent_choice = self.mouse2.get_mouse_location(zone_activations)
+
+
+                    if opponent_type == "mouse_mouse":
+                        # Retrieve locations from both queues for real mice
+                        mouselocation = mouse1.get_mouse_location(zone_activations)
+                        opponent_choice = mouse2.get_mouse_location(zone_activations)
+                    elif opponent_type == "mouse_computer":
+                        # Retrieve location for the real mouse from its queue and get the simulated mouse's location
+                        mouselocation = mouse1.get_mouse_location(zone_activations)
+
+                        opponent_choice = mouse2sim.get_mouse_location(Locations.Unknown,currentstate)  # Assuming the method can be called without actual location
+
+                    else:
+                        # Retrieve locations from simulated mice methods
+
+                        mouselocation = mouse1sim.get_mouse_location(Locations.Unknown,currentstate)
+
+                        opponent_choice = mouse2sim.get_mouse_location(Locations.Unknown,currentstate)
                     if mouselocation == Locations.Center:
                         trialevents = trialevents + Events.Mouse1InCenter.value
                     elif mouselocation == Locations.Cooperate:
