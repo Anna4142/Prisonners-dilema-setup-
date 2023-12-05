@@ -207,10 +207,10 @@ class ExperimentManager:
 
 
 
-    def start_streaming_exp(self, num_trial, duration, time_decision, opponent_type, opponent_strategy):
+    def start_streaming_exp(self, num_trial, duration, time_decision, opponent_type, opponent1_strategy,opponent2_strategy):
             # OPEN CSV TO LOG DETAILS
             print("opponent ", opponent_type)
-            print("opponent strategy ", opponent_strategy)
+            print("opponent strategy ", opponent1_strategy)
 
             if opponent_type == "mouse and mouse":
                 mouse1 = MouseMonitor(1)
@@ -223,15 +223,15 @@ class ExperimentManager:
                 mouse1 = MouseMonitor(1)
                 mouse1sim = None
                 mouse2 = Simulated_mouse()
-                mouse2.SetStrategy(opponent_strategy)
+                mouse2.SetStrategy(opponent1_strategy)
                 mouse2sim = mouse2
             else:
                 mouse1 = Simulated_mouse()
-                mouse1.SetStrategy(opponent_strategy)
+                mouse1.SetStrategy(opponent1_strategy)
                 mouse1sim = mouse1
                 mouse2 = Simulated_mouse()
                 mouse2.SetStrategy(
-                    opponent_strategy)  # Micky - the case of two different strategies for two simulated mice is not handled
+                    opponent2_strategy)
                 mouse2sim = mouse2
             self.stateManager.SetTimeOut(duration, time_decision)
 

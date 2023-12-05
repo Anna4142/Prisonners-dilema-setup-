@@ -219,8 +219,10 @@ class ExperimentGUI:
                 'num_trials': num_trials,
                 'trial_duration': trial_duration,
                 'decision_time': decision_time,
-                'opponent_strategy': opponent_strategy,
+
                 'opponent_type':opponent_type,
+                'opponent_strategy': opponent_strategy,
+                'computer_opponent_strategy' : computer_opponent_strategy,
             }
 
             #print(settings)
@@ -230,6 +232,8 @@ class ExperimentGUI:
             # Handle the case where the input is not a valid integer
             messagebox.showerror("Invalid Input", "Please enter valid numbers for trials, duration, and decision time.")
             return None
+
+
 
 
 
