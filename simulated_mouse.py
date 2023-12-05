@@ -27,7 +27,7 @@ class Simulated_mouse:
         else:
             print("Error: p should be between 0 and 1")
 
-    def GetMouseLocation(self, mouse_location,current_state):
+    def get_mouse_location(self, mouse_location,current_state):
         list_opp = Locations.Unknown  # Default to no decision
         if not mouse_location:  # If the mouse_location isn't provided, get it from the MouseMonitor
                 mouse_location = self.mouse_monitor.get_mouse_location()

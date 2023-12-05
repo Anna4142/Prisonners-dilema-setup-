@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="da1ff266-2821-4c8b-867a-7aec48bfd940" name="Changes" comment="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExperimentManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExperimentManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulated_mouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulated_mouse.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -282,7 +281,42 @@
       <option name="project" value="LOCAL" />
       <updated>1701778082483</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <created>1701778105061</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778105061</updated>
+    </task>
+    <task id="LOCAL-00020" summary="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <created>1701778138779</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778138779</updated>
+    </task>
+    <task id="LOCAL-00021" summary="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <created>1701778160726</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778160726</updated>
+    </task>
+    <task id="LOCAL-00022" summary="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <created>1701778311342</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778311342</updated>
+    </task>
+    <task id="LOCAL-00023" summary="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py">
+      <created>1701778324510</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778324510</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -324,6 +358,7 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
     <MESSAGE value="simulated mouse revision&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
     <MESSAGE value="handling 2 different simulated mice changes+changes in exp manager&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
+    <MESSAGE value="changes in exp manger&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
     <MESSAGE value="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
     <option name="LAST_COMMIT_MESSAGE" value="handling 2 different simulated mice changes&#10;&#10;# Conflicts:&#10;#&#9;ExperimentManager.py" />
   </component>
