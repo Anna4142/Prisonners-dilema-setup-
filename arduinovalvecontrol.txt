@@ -1,0 +1,128 @@
+// Serial port constants
+const int baud_rate = 9600;
+
+// Control constants 
+const int ONBOARD_LED          = 13;    // digital out to drive the on board LED for heart bit
+const int SLOW_HEART_BIT_DELAY = 500;  // Delay time for slow rate heartbit 
+const int FAST_HEART_BIT_DELAY = 200;  // delay time for the fast rate heartbit
+const int NUM_DIGITAL_CHANNEL  = 16;    // number of digital channels. 
+
+// control variables
+bool heartBitOn;                          // marks that heart bit LED is currently on
+int  heartBitDelay;
+bool waitingForDigitalChannelNumber;      // marks the comunication phase. waiting for channel or for on/off command
+int  digitalPinMode[NUM_DIGITAL_CHANNEL]; // shoes channel mode. 0 - input, 1 - output
+int  selectedChannel;
+unsigned long timeSnap;
+
+// setup code - runs once
+void setup() 
+{
+  // Digital system initialization
+  pinMode(ONBOARD_LED, OUTPUT);
+  
+  // Serial port initialization
+  Serial.begin(baud_rate);
+  
+  // Control Variables initialization
+  heartBitOn = false;
+  heartBitDelay = SLOW_HEART_BIT_DELAY;
+  waitingForDigitalChannelNumber = true;
+
+  // Initialize digital pins to LOW
+  for (int i = 0; i < NUM_DIGITAL_CHANNEL; i++) 
+  {
+    pinMode(i, OUTPUT);  // Set the pin mode to OUTPUT
+    digitalWrite(i, LOW);  // Set the pin to LOW
+    digitalPinMode[i] = 1;  // Update the mode to OUTPUT
+  }
+
+  timeSnap = millis();
+  
+  // blink three times to indicate start of program
+  digitalWrite(ONBOARD_LED, LOW);
+  for (int it = 0; it < 3; it++) 
+  {
+    digitalWrite(ONBOARD_LED, HIGH);
+    delay(100);
+    digitalWrite(ONBOARD_LED, LOW);
+    delay(100);  
+  }
+}
+
+// main code, runs repeatedly:
+void loop() 
+{    
+  byte inputbyte;
+  
+  if (Serial.available() > 0) 
+  {   
+    // read a single byte
+    byte inputbyte = Serial.read();
+    if (waitingForDigitalChannelNumber)
+      selectChannel(inputbyte);
+    else
+      actOnChannel(inputbyte);
+  }
+  
+  performHeartBit();  
+}
+
+void selectChannel(byte digChannel)
+{
+  if ((digChannel > 0) && (digChannel < NUM_DIGITAL_CHANNEL))
+  {
+    selectedChannel = digChannel;
+    if (digitalPinMode[selectedChannel] == 0)
+    {
+        pinMode(selectedChannel, OUTPUT);
+        digitalPinMode[selectedChannel] = 1; 
+    }
+    waitingForDigitalChannelNumber = false;
+    heartBitDelay = FAST_HEART_BIT_DELAY;
+  }
+}
+
+void actOnChannel(byte channelOn)
+{
+  bool operationValid = false;
+  
+  if (channelOn == 1)
+  {
+    digitalWrite(selectedChannel, LOW);
+    operationValid = true;
+  }
+  else if (channelOn == 0)
+  {
+    digitalWrite(selectedChannel, HIGH);
+    operationValid = true;
+  }
+
+  if (operationValid)
+  {
+    waitingForDigitalChannelNumber = true;
+    heartBitDelay = SLOW_HEART_BIT_DELAY;
+  }
+}
+
+void performHeartBit()  
+{
+  unsigned long currentTime;
+  
+  currentTime = millis();
+  
+  if (currentTime - timeSnap > heartBitDelay)
+  {
+    if (heartBitOn)
+    {
+      digitalWrite(ONBOARD_LED, LOW);
+      heartBitOn = false;
+    }
+    else
+    {
+      digitalWrite(ONBOARD_LED, HIGH);
+      heartBitOn = false;
+    }
+    timeSnap = currentTime;
+  }
+}
